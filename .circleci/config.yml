@@ -1,19 +1,18 @@
 version: 2.1
-
 orbs:
-  docker: circleci/docker@1.0.1
-
-jobs:
-  build-image-only:
-    executor: docker/docker
-    steps:
-      - setup_remote_docker
-      - checkout
-      - docker/build:
-          image: $CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME
-
+  aws-ecr: circleci/aws-ecr@6.5.0
+  aws-ecs: circleci/aws-ecs@0.0.10
 workflows:
-  build-docker-image-only:
+  build-and-deploy:
     jobs:
-      - build-image-only
-
+      - aws-ecr/build-and-push-image:
+          account-url: AWS_ECR_ACCOUNT_URL
+          repo: '${MY_APP_PREFIX}'
+          region: AWS_REGION
+          tag: '${CIRCLE_SHA1}'
+      - aws-ecs/deploy-service-update:
+          requires:
+            - aws-ecr/build-and-push-image
+          family: '${MY_APP_PREFIX}-service'
+          cluster-name: 'bao-hollow-service-cluster'
+          container-image-name-updates: 'container=${MY_APP_PREFIX}-service,tag=${CIRCLE_SHA1}'
