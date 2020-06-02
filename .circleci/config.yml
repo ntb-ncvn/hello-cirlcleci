@@ -11,7 +11,7 @@ jobs:
       - checkout
       - docker/check
       - docker/build:
-          image: my_repo/orb-test
+        image: $CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME
 
 workflows:
   build-docker-image-only:
