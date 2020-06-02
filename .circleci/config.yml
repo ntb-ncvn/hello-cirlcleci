@@ -4,17 +4,16 @@ orbs:
   docker: circleci/docker@1.0.1
 
 jobs:
-  check-and-build-only:
+  build-image-only:
     executor: docker/docker
     steps:
       - setup_remote_docker
-      - checkout
-      - docker/check
-      - docker/build:
-          image: $CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME
+      - checkout    
+      - build:
+        image: $CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME
 
 workflows:
   build-docker-image-only:
     jobs:
-      - check-and-build-only
+      - build-image-only
 
