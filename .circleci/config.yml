@@ -1,12 +1,16 @@
- version: 2.1
+version: 2.1
 
- orbs:
-  ecs: circleci/aws-ecs@0.0.11
+orbs:
+  docker: circleci/docker@1.0.1
 
- jobs:
-   build:
-     executor: win/default
-    
-     steps:
-       - checkout
-       - run: dotnet build
+jobs:
+  build-with-docker:
+    steps:
+      - checkout
+      - build
+
+workflows:
+  build-with-docker:
+    jobs:
+      - build-with-docker
+
