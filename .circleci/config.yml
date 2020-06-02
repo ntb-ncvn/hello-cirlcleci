@@ -5,12 +5,13 @@ orbs:
 
 jobs:
   check-and-build-only:
-    executor: docker/machine
+    executor: docker/docker
     steps:
+      - setup_remote_docker
       - checkout
       - docker/check
       - docker/build:
-          image: bao/hello-circleci
+          image: my_repo/orb-test
 
 workflows:
   build-docker-image-only:
