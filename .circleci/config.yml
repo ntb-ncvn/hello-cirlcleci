@@ -8,8 +8,8 @@ jobs:
     executor: docker/docker
     steps:
       - setup_remote_docker
-      - checkout    
-      - build:
+      - checkout
+      - docker/build:
         image: $CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME
 
 workflows:
