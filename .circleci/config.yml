@@ -4,14 +4,16 @@ orbs:
   docker: circleci/docker@1.0.1
 
 jobs:
-  build-with-docker:
+  check-and-build-only:
+    executor: docker/machine
     steps:
       - checkout
-      - build
-        - image: docker/mcr.microsoft.com/dotnet/core/sdk:3.1
+      - docker/check
+      - docker/build:
+          image: bao/hello-circleci
 
 workflows:
-  build-image:
+  build-docker-image-only:
     jobs:
-      - build-with-docker
+      - check-and-build-only
 
